@@ -1,0 +1,475 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+    <div class="container" id="container">
+      <div class="row mt-2 m-0">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-8">
+                <div class="h5">Ongoing Tasks</div>
+              </div>
+              <div class="col col-md-4">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search"
+                  [(ngModel)]="searchText"
+                />
+              </div>
+            </div>
+
+            <table class="table table-hover text-center mt-3">
+              <thead>
+                <tr>
+                  <th>Assigned Date</th>
+                  <th>Location</th>
+                  <th>Task Id</th>
+                  <th>Equipment Name</th>
+                  <th>Task Info</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i of ongoingTasks | search : searchText">
+                  <td>{{ i.date }}</td>
+                  <td>{{ i.location }}</td>
+                  <td>{{ i.taskid }}</td>
+                  <td>{{ i.eq_name }}</td>
+                  <td>
+                    <button
+                      (click)="getTaskData(i._id)"
+                      class="btn btn-primary lift edit-btn"
+                      data-bs-target="#exampleModalToggle"
+                      data-bs-toggle="modal"
+                    >
+                      Task Details
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      (click)="getDeleteId(i._id)"
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deletemodal"
+                      class="btn btn-danger lift delete delete-btn"
+                    >
+                      <span class="material-symbols-outlined"> delete </span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal"
+        id="exampleModalToggle"
+        aria-hidden="true"
+        aria-labelledby="exampleModalToggleLabel"
+        tabindex="-1"
+      >
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel">
+                Task Details
+              </h1>
+              <button
+                id="x1"
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- Show a second modal and hide this one with the button below. -->
+              <form [formGroup]="addForm">
+                <div class="row">
+                  <div class="col col-md-4">
+                    <label for="eqnum" class="form-label"
+                      >Equipment Number</label
+                    >
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('eq_num')?.errors}"
+                      type="text"
+                      class="form-control"
+                      id="eqnum"
+                      formControlName="eq_num"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="emp" class="form-label"
+                      >Assigned Employee</label
+                    >
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('assignedemp')?.errors}"
+                      type="text"
+                      class="form-control"
+                      id="emp"
+                      formControlName="assignedemp"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="cus" class="form-label">Customer</label>
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('customer')?.errors}"
+                      type="text"
+                      class="form-control"
+                      id="cus"
+                      formControlName="customer"
+                    />
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col col-md-4">
+                    <label for="openingbal" class="form-label"
+                      >Opening Balance</label
+                    >
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('openingbalance')?.errors}"
+                      type="number"
+                      id="openingbal"
+                      class="form-control"
+                      formControlName="openingbalance"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="starttime" class="form-label">Start Time</label>
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('starttime')?.errors}"
+                      type="time"
+                      id="starttime"
+                      class="form-control"
+                      formControlName="starttime"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="endtime" class="form-label">End Time</label>
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('endtime')?.errors}"
+                      type="time"
+                      id="endtime"
+                      class="form-control"
+                      formControlName="endtime"
+                    />
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col col-md-4">
+                    <label for="startReading" class="form-label"
+                      >Start Reading</label
+                    >
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('startreading')?.errors}"
+                      formControlName="startreading"
+                      type="number"
+                      id="startReading"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="endReading" class="form-label"
+                      >End Reading</label
+                    >
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('endreading')?.errors}"
+                      type="number"
+                      id="endReading"
+                      class="form-control"
+                      formControlName="endreading"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="shift" class="form-label">shift</label>
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('shift')?.errors}"
+                      type="text"
+                      id="shift"
+                      class="form-control"
+                      formControlName="shift"
+                    />
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col col-md-4">
+                    <label for="remarks" class="form-label">Remarks</label>
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('remarks')?.errors}"
+                      type="text"
+                      class="form-control"
+                      id="remarks"
+                      formControlName="remarks"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="status" class="form-label"
+                      >Equipment Status</label
+                    >
+                    <select
+                    [ngClass]="{'is-invalid':submitted && addForm.get('eq_status')?.errors}"
+                      formControlName="eq_status"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected>Equipment Status</option>
+                      <option value="Active">Active</option>
+                      <option value="Maintanance">Maintanance</option>
+                    </select>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="usedhours" class="form-label"
+                      >Total Used Hours</label
+                    >
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('totalhoursused')?.errors}"
+                      type="number"
+                      class="form-control"
+                      formControlName="totalhoursused"
+                    />
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col col-md-4">
+                    <label for="balhours" class="form-label"
+                      >closing Balance</label
+                    >
+                    <input
+                    [ngClass]="{'is-invalid':submitted && addForm.get('closingBal')?.errors}"
+                      type="number"
+                      class="form-control"
+                      formControlName="closingBal"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <div class="fst-normal mt-1">Refill Details</div>
+                    <button
+                      (click)="setRefill()"
+                      type="button"
+                      class="btn btn-primary mt-1 lift edit-btn"
+                      data-bs-target="#exampleModalToggle2"
+                      data-bs-toggle="modal"
+                    >
+                      Refill
+                    </button>
+                  </div>
+                </div>
+                <hr />
+                <div class="row mt-2">
+                  <div class="col col-md-4"></div>
+                  <div class="col col-md-4">
+                    <button
+                      (click)="submit()"
+                      id="submit"
+                      type="submit"
+                      class="btn btn-primary lift text-uppercase"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                  <div class="col col-md-4"></div>
+                </div>
+              </form>
+            </div>
+            <!-- <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger delete-btn lift"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal"
+        id="exampleModalToggle2"
+        aria-hidden="true"
+        aria-labelledby="exampleModalToggleLabel2"
+        tabindex="-1"
+      >
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+                Refill Details
+              </h1>
+              <button
+                id="x"
+                type="button"
+                class="btn-close"
+                data-bs-target="#exampleModalToggle"
+                data-bs-toggle="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- Hide this modal and show the first with the button below. -->
+              <form [formGroup]="refillForm">
+                <div class="row">
+                  <!-- formArrayname -->
+                  <div formArrayName="refills">
+                    <!-- loop -->
+                    <div
+                      *ngFor="let refill of refillControls; let i = index"
+                      [formGroupName]="i"
+                    >
+                      <div class="row mt-3">
+                        <hr />
+                        <div class="col col-md-4">
+                          <label for="refillnum" class="form-label"
+                            >Refill Number</label
+                          >
+                          <input
+                            formControlName="refillnum"
+                            type="number"
+                            class="form-control"
+                            id="refillnum"
+                            placeholder="serial No: 1,2,3..."
+                          />
+                        </div>
+                        <div class="col col-md-4">
+                          <label for="openingbalance" class="form-label"
+                            >Opening Balance</label
+                          >
+                          <input
+                            formControlName="openingbalance"
+                            type="number"
+                            class="form-control"
+                            id="openingbalance"
+                          />
+                        </div>
+                        <div class="col col-md-4">
+                          <label for="startreading" class="form-label"
+                            >Start Reading</label
+                          >
+                          <input
+                            formControlName="startreading"
+                            type="number"
+                            class="form-control"
+                            id="startreading"
+                          />
+                        </div>
+                      </div>
+                      <div class="row mt-2">
+                        <div class="col col-md-4">
+                          <label for="endreading" class="form-label"
+                            >End Reading</label
+                          >
+                          <input
+                            formControlName="endreading"
+                            type="number"
+                            id="endreading"
+                            class="form-control"
+                          />
+                        </div>
+                        <div class="col col-md-4">
+                          <label for="closingbalance" class="form-label"
+                            >Closing Balance</label
+                          >
+                          <input
+                            formControlName="closingbalance"
+                            type="number"
+                            id="closingbalance"
+                            class="form-control"
+                          />
+                        </div>
+                        <div class="col col-md-4">
+                          <button
+                            (click)="deleteRow(i)"
+                            class="btn btn-danger delete-btn lift mt-4"
+                            type="button"
+                          >
+                            <span class="material-symbols-outlined">
+                              remove
+                            </span>
+                          </button>
+                          <button
+                            id="btn1"
+                            class="btn btn-primary edit-btn lift mt-4"
+                            type="button"
+                            (click)="addnewRow()"
+                          >
+                            <span class="material-symbols-outlined"> add </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-5">
+                    <div class="col col-md-4"></div>
+                    <div class="col col-md-4">
+                      <button
+                      (click)="submitRefill()"
+                        type="submit"
+                        id="refill"
+                        class="btn btn-primary text-uppercase lift"
+                      >
+                        Save Refills
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!-- <div class="modal-footer">
+              <button
+                class="btn btn-secondary lift edit-btn"
+                data-bs-target="#exampleModalToggle"
+                data-bs-toggle="modal"
+              >
+                Back to Form
+              </button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <!-- delete model -->
+      <div
+        class="modal fade"
+        id="deletemodal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Delete Warning
+              </h1>
+            </div>
+            <div class="modal-body">Are you sure want to Delete ?</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                (click)="deleteTask()"
+                type="button"
+                class="btn btn-danger delete-btn lift"
+                data-bs-dismiss="modal"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

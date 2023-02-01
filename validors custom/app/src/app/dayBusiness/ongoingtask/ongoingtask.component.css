@@ -1,0 +1,26 @@
+#container {
+  height: 42rem;
+  overflow-y: scroll;
+}
+#eqDetails {
+  margin-top: 18%;
+}
+#submit {
+  margin-left: 30%;
+}
+#btn1 {
+  margin-left: 7px;
+}
+#refill {
+  margin-left: 30%;
+}
+#x {
+  position: relative;
+  right: 5px;
+  bottom: 15px;
+}
+#x1 {
+  position: relative;
+  right: 5px;
+  bottom: 15px;
+}

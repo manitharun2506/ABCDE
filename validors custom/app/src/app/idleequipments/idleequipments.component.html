@@ -1,0 +1,81 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+    <div class="container" id="container">
+      <div class="row mt-2 m-0">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-8">
+                <div class="h5">Idle Equipments</div>
+              </div>
+              <div class="col col-md-4">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search Table"
+                  [(ngModel)]="searchText"
+                />
+              </div>
+            </div>
+            <div class="row mt-3">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Equipment Name</th>
+                    <th>Equipment Number</th>
+                    <th>Equipment Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i of tableData | search : searchText">
+                    <td>{{ i.eq_name }}</td>
+                    <td>{{ i.eq_num }}</td>
+                    <td>{{ "Active" }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row" *ngIf="tableArray.length > tableData.length">
+              <div class="col col-md-10"></div>
+              <div class="col col-md-2">
+                <nav aria-label="Page navigation example" id="pagination">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="end > 5"
+                        (click)="
+                          start = start - 5; end = end - 5; getAllMechSetups()
+                        "
+                      >
+                        Previous
+                      </button>
+                    </li>
+
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="tableArray.length > tableData.length"
+                        (click)="
+                          start = start + 5; end = end + 5; getAllMechSetups()
+                        "
+                      >
+                        Next
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

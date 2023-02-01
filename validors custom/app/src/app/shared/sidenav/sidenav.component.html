@@ -1,0 +1,257 @@
+<!-- start: sidebar -->
+<div class="sidebar p-2 py-md-3 @@cardClass">
+  <div class="container-fluid">
+    <!-- sidebar: title-->
+    <div class="title-text d-flex align-items-center mb-4 mt-1">
+      <h4 class="sidebar-title mb-0 flex-grow-1">
+        <span class="sm-txt hide-large"
+          ><img width="55" src="/assets/img/logo.png"
+        /></span>
+        <span> <img width="200" src="/assets/img/logo-main.png" /> </span>
+      </h4>
+    </div>
+    <!-- sidebar: Create new -->
+    <!-- <div class="create-new py-3 mb-2"></div> -->
+    <!-- sidebar: menu list -->
+    <div class="main-menu flex-grow-1">
+      <ul class="menu-list">
+        <li class="divider py-2 lh-sm">
+          <span class="small">MAIN</span><br />
+          <small class="text-muted">Unique dashboard designs </small>
+        </li>
+        <li>
+          <a class="m-link" routerLink="/dashboard">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"
+              />
+              <path
+                class="fill-secondary"
+                fill-rule="evenodd"
+                d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"
+              />
+            </svg>
+            <span class="ms-2">My Dashboard</span>
+          </a>
+        </li>
+        <li class="collapsed">
+          <a
+            class="m-link"
+            data-bs-toggle="collapse"
+            data-bs-target="#menu-Applications"
+            href="#"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M5.5 2A3.5 3.5 0 0 0 2 5.5v5A3.5 3.5 0 0 0 5.5 14h5a3.5 3.5 0 0 0 3.5-3.5V8a.5.5 0 0 1 1 0v2.5a4.5 4.5 0 0 1-4.5 4.5h-5A4.5 4.5 0 0 1 1 10.5v-5A4.5 4.5 0 0 1 5.5 1H8a.5.5 0 0 1 0 1H5.5z"
+              />
+              <path
+                class="fill-secondary"
+                d="M16 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"
+              />
+            </svg>
+            <span class="ms-2">Master</span>
+            <span class="arrow fa fa-angle-right ms-auto text-end" ></span>
+            
+          </a>
+          <!-- Menu: Sub menu ul -->
+          <ul class="sub-menu collapse" id="menu-Applications">
+            <li><a class="ms-link" routerLink="/locations">Location</a></li>
+            <li>
+              <a class="ms-link" routerLink="/suppliers">Add Supplier</a>
+            </li>
+            <li><a class="ms-link" routerLink="/partners">Add Partner</a></li>
+            <li><a class="ms-link" routerLink="/customers">Add Customer</a></li>
+            <li>
+              <a class="ms-link" routerLink="/expencetype">Expense Type</a>
+            </li>
+            <li><a class="ms-link" routerLink="/addemp">Add Employee</a></li>
+            <li>
+              <a class="ms-link" routerLink="/remarks">Remarks </a>
+            </li>
+
+            <li><a class="ms-link" routerLink="/category">Add Catagory</a></li>
+            <li><a class="ms-link" routerLink="/shift">Shift</a></li>
+            <li>
+              <a class="ms-link" routerLink="/designation">Add Designation</a>
+            </li>
+            <li>
+              <a class="ms-link" routerLink="/empstatus">Employee Status</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="collapsed">
+          <a
+            class="m-link"
+            data-bs-toggle="collapse"
+            data-bs-target="#menu-Account"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              width="22"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"
+              />
+            </svg>
+
+            <span class="ms-2">Inventory</span>
+            <span class="arrow fa fa-angle-right ms-auto text-end"></span>
+          </a>
+          <!-- Menu: Sub menu ul -->
+          <ul class="sub-menu collapse" id="menu-Account">
+            <li>
+              <a class="ms-link" routerLink="/equipments">Equipments</a>
+            </li>
+            <li>
+              <a class="ms-link" routerLink="/spareparts">Spare Parts</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="collapsed">
+          <a
+            class="m-link"
+            data-bs-toggle="collapse"
+            data-bs-target="#menu-bussiness"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              width="22"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"
+              />
+            </svg>
+
+            <span class="ms-2">Day Bussiness</span>
+            <span class="arrow fa fa-angle-right ms-auto text-end"></span>
+          </a>
+          <!-- Menu: Sub menu ul -->
+          <ul class="sub-menu collapse" id="menu-bussiness">
+            <li>
+              <a class="ms-link" routerLink="/mechsetup">Mechine Setup</a>
+            </li>
+            <li>
+              <a class="ms-link" routerLink="/assigntask">Assign Task</a>
+            </li>
+            <li>
+              <a class="ms-link" routerLink="/ongoingtask">Ongoing Task</a>
+            </li>
+            <li>
+              <a class="ms-link" routerLink="/finishedtask">Finished Task</a>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a class="m-link" routerLink="/payments">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              width="22"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 8.25H9m6 3H9m3 6l-3-3h1.5a3 3 0 100-6M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+
+            <span class="ms-2">Payments</span>
+          </a>
+        </li>
+        <li>
+          <a class="m-link" routerLink="/expences">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              width="22"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z"
+              />
+            </svg>
+
+            <span class="ms-2">Expences</span>
+          </a>
+        </li>
+        <li>
+          <a class="m-link" routerLink="/ideleq">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              width="22"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"
+              />
+            </svg>
+
+            <span class="ms-2">Idle Equipments</span>
+          </a>
+        </li>
+        <li></li>
+      </ul>
+    </div>
+    <!-- sidebar: footer link -->
+    <!-- sidebar: footer link -->
+    <ul class="menu-list nav navbar-nav flex-row text-center menu-footer-link">
+      <li class="nav-item flex-fill p-2">
+        <button id="btn" title="sign-out" (click)="logOut()">
+          <span class="logout-text"> Log Out </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path d="M7.5 1v7h1V1h-1z" />
+            <path
+              class="fill-secondary"
+              d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812z"
+            />
+          </svg>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+<router-outlet></router-outlet>

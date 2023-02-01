@@ -1,0 +1,22 @@
+
+#container {
+  height: 42rem;
+  overflow-y: scroll;
+}
+#table{
+  width: 100%;
+  white-space: nowrap;
+overflow-x: scroll;
+}
+
+
+#img{
+  border-radius: 50%;
+}
+#pagination{
+  margin-left:40%;
+}
+#cancel{
+  margin-left: 2%;
+  margin-top: 2%;
+}

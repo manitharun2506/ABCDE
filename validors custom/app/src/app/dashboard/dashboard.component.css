@@ -1,0 +1,17 @@
+.avatar {
+  background-color: rgba(0, 166, 147);
+}
+#id {
+  height: 50px;
+  width: 50px;
+}
+#map {
+  height: 300px; /* The height is 400 pixels */
+  width: 100%; /* The width is the width of the web page */
+}
+
+#chart {
+  max-width: 380px;
+  margin: 35px auto;
+  padding: 0;
+}

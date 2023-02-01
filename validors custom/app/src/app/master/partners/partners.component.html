@@ -1,0 +1,824 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+
+    <div class="container" id="container">
+      <div
+        class="row mt-2 m-0"
+        *ngIf="showAddForm === true && showEditForm === false"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="h5">Add Partner</div>
+            </div>
+            <form [formGroup]="addForm">
+              <div class="row mt-1">
+                <div class="col col-md-4">
+                  <label for="name" class="form-label">Name *</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && addForm.get('partner_name')?.errors
+                    }"
+                    formControlName="partner_name"
+                    type="text"
+                    maxlength="20"
+                    class="form-control"
+                    id="name"
+                    placeholder="Enter Partner Name"
+                  />
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted && addForm.get('partner_name')?.errors?.['nameValidator']"
+                  >
+                    No Special Chrecters Allowed
+                  </div>
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted && addForm.get('partner_name')?.errors?.['noWhitespaceValidator']"
+                  >
+                    First Letter Should be Charecter
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="phonenumber" class="form-label"
+                    >Phone Number *</label
+                  >
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && addForm.get('phone_number')?.errors
+                    }"
+                    formControlName="phone_number"
+                    type="tel"
+                    maxlength="10"
+                    class="form-control"
+                    id="phonenumber"
+                    placeholder="Enter Phone Number"
+                  />
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted && addForm.get('phone_number')?.errors?.['phoneNumberValidator']"
+                  >
+                    Special Charecters && Spaces not Allowed
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="altphonenumber" class="form-label"
+                    >Alternate Phone Number</label
+                  >
+                  <input
+                    formControlName="alt_phone_num"
+                    type="tel"
+                    maxlength="10"
+                    class="form-control"
+                    id="altphonenumber"
+                    placeholder="Alternate Phone Number"
+                  />
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="country" class="form-label"
+                    >Select Country *</label
+                  >
+                  <select
+                    [ngClass]="{
+                      'is-invalid': submitted && addForm.get('country')?.errors
+                    }"
+                    (change)="getStates($event)"
+                    formControlName="country"
+                    class="form-select"
+                    id="country"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select Country</option>
+                    <option *ngFor="let i of globalData">
+                      {{ i.country }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="state" class="form-label">Select State *</label>
+                  <select
+                    [ngClass]="{
+                      'is-invalid': submitted && addForm.get('state')?.errors
+                    }"
+                    (change)="getCities($event)"
+                    formControlName="state"
+                    class="form-select"
+                    id="state"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select State</option>
+                    <option *ngFor="let i of states">{{ i.name }}</option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="city" class="form-label">Select City *</label>
+                  <select
+                    [ngClass]="{
+                      'is-invalid': submitted && addForm.get('city')?.errors
+                    }"
+                    formControlName="city"
+                    class="form-select"
+                    id="city"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select City</option>
+                    <option *ngFor="let i of cities">{{ i.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="address" class="form-label">Address *</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid': submitted && addForm.get('address')?.errors
+                    }"
+                    formControlName="address"
+                    type="text"
+                    maxlength="50"
+                    id="address"
+                    class="form-control"
+                    placeholder="Enter Address"
+                  />
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted&&addForm.get('address')?.errors?.['noWhitespaceValidator']"
+                  >
+                    {{ "First letter should be Charecter" }}
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="file" class="form-label">Upload Photo *</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid': submitted && addForm.get('photo')?.errors
+                    }"
+                    (change)="selectFile($event)"
+                    type="file"
+                    id="file"
+                    class="form-control"
+                    formControlName="photo"
+                  />
+                  <div class="mt-2">
+                    {{ "file size :5MB" + "(img.png , npg ,jpg are allowed)" }}
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="govid" class="form-label">GovId (Aadhar)*</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid': submitted && addForm.get('gov_id')?.errors
+                    }"
+                    formControlName="gov_id"
+                    type="text"
+                    maxlength="12"
+                    id="govid"
+                    class="form-control"
+                    placeholder="Pan ,Aadhar ,Passport"
+                  />
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted && addForm.get('gov_id')?.errors?.['aadharValidator']"
+                  >
+                    {{ "Special Charecters & Spaces not Allowed" }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="amount" class="form-label"
+                    >Opening Amount *</label
+                  >
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && addForm.get('opening_amount')?.errors
+                    }"
+                    formControlName="opening_amount"
+                    type="number"
+                    class="form-control"
+                    id="amount"
+                    placeholder="Amount"
+                  />
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted && editForm.get('opening_amount')?.errors?.['negativeNumberValidator']"
+                  >
+                    {{ "Negitive values not allowed" }}
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="date" class="form-label">Opening Date *</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && addForm.get('opening_date')?.errors
+                    }"
+                    type="date"
+                    class="form-control"
+                    id="data"
+                    formControlName="opening_date"
+                  />
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="h5 mt-1">Contract Details</div>
+                <div class="col col-md-4">
+                  <label for="date" class="form-label">Start Date</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && addForm.get('startdate')?.errors
+                    }"
+                    type="date"
+                    class="form-control"
+                    id="date"
+                    formControlName="startdate"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="date" class="form-label">End Date</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid': submitted && addForm.get('enddate')?.errors
+                    }"
+                    type="date"
+                    class="form-control"
+                    id="date"
+                    formControlName="enddate"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="note" class="form-label">Note</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid': submitted && addForm.get('note')?.errors
+                    }"
+                    formControlName="note"
+                    type="text"
+                    class="form-control"
+                    id="note"
+                    placeholder="Note"
+                  />
+                </div>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col col-md-4"></div>
+                <div class="col col-md-4">
+                  <button
+                    class="btn btn-primary lift text-uppercase"
+                    style="margin-left: 20%;"
+                    type="submit"
+                    (click)="submit()"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="row mt-2 m-0"
+        *ngIf="showAddForm === false && showEditForm === true"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="h5">Edit Partner</div>
+            </div>
+            <form [formGroup]="editForm">
+              <div class="row mt-1">
+                <div class="col col-md-4">
+                  <label for="name" class="form-label">Name *</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && editForm.get('partner_name')?.errors
+                    }"
+                    formControlName="partner_name"
+                    maxlength="20"
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    placeholder="Enter Partner Name"
+                  />
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted && editForm.get('partner_name')?.errors?.['nameValidator']"
+                  >
+                    No Special Chrecters Allowed
+                  </div>
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted && editForm.get('partner_name')?.errors?.['noWhitespaceValidator']"
+                  >
+                    First Letter Should be Charecter
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="phonenumber" class="form-label"
+                    >Phone Number *</label
+                  >
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && editForm.get('phone_number')?.errors
+                    }"
+                    formControlName="phone_number"
+                    maxlength="10"
+                    type="tel"
+                    class="form-control"
+                    id="phonenumber"
+                    placeholder="Enter Phone Number"
+                  />
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted && editForm.get('phone_number')?.errors?.['phoneNumberValidator']"
+                  >
+                    Special Charecters && Spaces not Allowed
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="altphonenumber" class="form-label"
+                    >Alternate Phone Number</label
+                  >
+                  <input
+                    formControlName="alt_phone_num"
+                    type="tel"
+                    maxlength="10"
+                    class="form-control"
+                    id="altphonenumber"
+                    placeholder="Alternate Phone Number"
+                  />
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="country" class="form-label"
+                    >Select Country *</label
+                  >
+                  <select
+                    [ngClass]="{
+                      'is-invalid': submitted && editForm.get('country')?.errors
+                    }"
+                    (change)="getStates($event)"
+                    formControlName="country"
+                    class="form-select"
+                    id="country"
+                    aria-label="Default select example"
+                  >
+                    <option selected>{{ editData.country }}</option>
+                    <option *ngFor="let i of globalData">
+                      {{ i.country }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="state" class="form-label">Select State *</label>
+                  <select
+                    [ngClass]="{
+                      'is-invalid': submitted && editForm.get('state')?.errors
+                    }"
+                    (change)="getCities($event)"
+                    formControlName="state"
+                    class="form-select"
+                    id="state"
+                    aria-label="Default select example"
+                  >
+                    <option selected>{{ editData.state }}</option>
+                    <option *ngFor="let i of states">{{ i.name }}</option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="city" class="form-label">Select City *</label>
+                  <select
+                    [ngClass]="{
+                      'is-invalid': submitted && editForm.get('city')?.errors
+                    }"
+                    formControlName="city"
+                    class="form-select"
+                    id="city"
+                    aria-label="Default select example"
+                  >
+                    <option selected>{{ editData.city }}</option>
+                    <option *ngFor="let i of cities">{{ i.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="address" class="form-label">Address *</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid': submitted && editForm.get('address')?.errors
+                    }"
+                    formControlName="address"
+                    type="text"
+                    maxlength="50"
+                    id="address"
+                    class="form-control"
+                    placeholder="Enter Address"
+                  />
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted&&editForm.get('address')?.errors?.['noWhitespaceValidator']"
+                  >
+                    {{ "First letter should be Charecter" }}
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="file" class="form-label">Upload Photo *</label>
+                  <div>
+                    <span>Old imgData :</span
+                    ><span class="text-success">{{ this.imgmsg }}</span>
+                  </div>
+                  <input
+                    [ngClass]="{
+                      'is-invalid': submitted && editForm.get('photo')?.errors
+                    }"
+                    (change)="selectFile($event)"
+                    type="file"
+                    id="file"
+                    class="form-control"
+                    formControlName="photo"
+                  />
+                  <div class="mt-2">
+                    {{ "file size :5MB" + "(img.png , npg ,jpg are allowed)" }}
+                  </div>
+                </div>
+              </div>
+              <div class="col col-md-4">
+                <label for="govid" class="form-label"
+                  >GovID (Aadhar Number) *</label
+                >
+                <input
+                  [ngClass]="{
+                    'is-invalid': submitted && editForm.get('gov_id')?.errors
+                  }"
+                  formControlName="gov_id"
+                  type="text"
+                  maxlength="12"
+                  id="govid"
+                  class="form-control"
+                  placeholder="Aadhar Number"
+                />
+                <div
+                  class="text-danger mt-2"
+                  *ngIf="submitted && editForm.get('gov_id')?.errors?.['aadharValidator']"
+                >
+                  {{ "Special Charecters & Spaces not Allowed" }}
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="amount" class="form-label"
+                    >Opening Amount *</label
+                  >
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && editForm.get('opening_amount')?.errors
+                    }"
+                    formControlName="opening_amount"
+                    type="number"
+                    class="form-control"
+                    id="amount"
+                    placeholder="Amount"
+                  />
+                  <div
+                    class="text-danger mt-2"
+                    *ngIf="submitted && editForm.get('opening_amount')?.errors?.['negativeNumberValidator']"
+                  >
+                    {{ "Negitive values not allowed" }}
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="date" class="form-label">Opening Date *</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && editForm.get('opening_date')?.errors
+                    }"
+                    type="date"
+                    class="form-control"
+                    id="data"
+                    formControlName="opening_date"
+                  />
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="h5 mt-1">Contract Details</div>
+                <div class="col col-md-4">
+                  <label for="date" class="form-label">Start Date</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid':
+                        submitted && editForm.get('startdate')?.errors
+                    }"
+                    type="date"
+                    class="form-control"
+                    id="date"
+                    formControlName="startdate"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="date" class="form-label">End Date</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid': submitted && editForm.get('enddate')?.errors
+                    }"
+                    type="date"
+                    class="form-control"
+                    id="date"
+                    formControlName="enddate"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="note" class="form-label">Note</label>
+                  <input
+                    [ngClass]="{
+                      'is-invalid': submitted && editForm.get('note')?.errors
+                    }"
+                    formControlName="note"
+                    type="text"
+                    class="form-control"
+                    id="note"
+                    placeholder="Note"
+                  />
+                </div>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col col-md-4"></div>
+                <div class="col col-md-4">
+                  <button
+                    class="btn btn-primary lift text-uppercase"
+                    style="margin-left: 20%;"
+                    type="submit"
+                    (click)="updatePartner()"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    class="btn lift text-uppercase btn-danger"
+                   style="margin-left: 2%;"
+                    (click)="cancel()"
+                    type="submit"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3 m-0">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-6">
+                <div class="h5">Partners Data</div>
+              </div>
+              <div class="col col-md-6">
+                <input
+                  [(ngModel)]="searchText"
+                  type="search"
+                  class="form-control"
+                  placeholder="Search"
+                />
+              </div>
+            </div>
+
+            <div class="row mt-2 text-center" id="table">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>PhoneNumber</th>
+                    <th>Adress</th>
+                    <th>Photo</th>
+                    <th>Gov Id</th>
+                    <th>Opening Amount</th>
+                    <th>Opening Date</th>
+                    <th>Contract Details</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let j = index;
+                      let i;
+                      of: tableData | search : searchText
+                    "
+                  >
+                    <td>{{ j + 1 }}</td>
+                    <td>{{ i.partner_name }}</td>
+                    <td>
+                      <div class="fs-6">
+                        {{ "phone no :" + i.phone_number }}
+                      </div>
+                      <div *ngIf="i.alt_phone_num!==null">{{ "Alt no :" + i.alt_phone_num }}</div>
+                    </td>
+                    <td>
+                      <div>{{ i.country + "," + i.state }}</div>
+                      <div>{{ i.city + "," + i.address }}</div>
+                    </td>
+                    <td>
+                      <img
+                        id="img"
+                        [src]="envirment.img_url + i.photo"
+                        alt=""
+                        height="45px"
+                        width="45px"
+                      />
+                    </td>
+                    <td>{{ i.gov_id }}</td>
+                    <td>{{ i.opening_amount }}</td>
+                    <td>{{ i.opening_date }}</td>
+                    <td>
+                      <button
+                        class="btn btn-primary lift edit-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                        type="button"
+                        (click)="modalTable(i)"
+                      >
+                        <span class="material-symbols-outlined">
+                          description
+                        </span>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        class="btn btn-secondary lift edit-btn"
+                        type="button"
+                        (click)="getEditData(i)"
+                      >
+                        <span class="material-symbols-outlined"> edit </span>
+                      </button>
+                      <button
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deletemodal"
+                        class="btn btn-danger lift delete-btn"
+                        (click)="deleteModal(i._id)"
+                      >
+                        <span class="material-symbols-outlined"> delete </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row" *ngIf="tableArray.length > tableData.length">
+              <div class="col col-md-9"></div>
+              <div class="col col-md-3">
+                <nav aria-label="Page navigation example" id="pagination">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="end > 5"
+                        (click)="
+                          start = start - 5; end = end - 5; getAllPartners()
+                        "
+                      >
+                        Previous
+                      </button>
+                    </li>
+
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="tableArray.length > tableData.length"
+                        (click)="
+                          start = start + 5; end = end + 5; getAllPartners()
+                        "
+                      >
+                        Next
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Contract Details
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-hover">
+              <tbody>
+                <tr>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Note</th>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>{{ modalData.startdate }}</td>
+                  <td>{{ modalData.enddate }}</td>
+                  <td>{{ modalData.note }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="deletemodal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Delete Warning
+            </h1>
+          </div>
+          <div class="modal-body">Are you sure want to Delete ?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger lift text-uppercase"
+              (click)="deletePartner()"
+              data-bs-dismiss="modal"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

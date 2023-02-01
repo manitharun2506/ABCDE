@@ -1,0 +1,22 @@
+#x {
+    position: relative;
+    right: 5px;
+    bottom: 15px;
+  }
+  #x1 {
+    position: relative;
+    right: 5px;
+    bottom: 15px;
+  }
+  #container {
+    height: 42rem;
+    overflow-y: scroll;
+  }
+  #table{
+    width: 100%;
+    white-space: nowrap;
+  overflow-x: scroll;
+  }
+  #refill{
+    margin-left: 100px;
+  }

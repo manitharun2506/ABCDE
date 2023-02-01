@@ -1,0 +1,18 @@
+#btn{
+   
+    margin-left: 16%;
+}
+#dbtn{
+    margin-left: 2%;
+    width: 45px;
+    height: 38px;
+}
+
+#pagination{
+    margin-left:50%;
+}
+#container{
+  
+    height: 42rem;
+    overflow-y: scroll;
+}

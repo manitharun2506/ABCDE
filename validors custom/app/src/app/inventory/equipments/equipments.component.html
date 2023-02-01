@@ -1,0 +1,627 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+    <div class="container" id="container">
+      <div
+        class="row m-0 mt-2"
+        *ngIf="showAddForm === true && showEditForm === false"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="h5">Add Equipment</div>
+            <form [formGroup]="addForm">
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="date" class="form-label">Date</label>
+                  <input
+                  [ngClass]="{'is-invalid':submitted && addForm.get('date')?.errors}"
+                    type="date"
+                    class="form-control"
+                    id="date"
+                    formControlName="date"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="name" class="form-label">Equipment Name</label>
+                  <input
+                  [ngClass]="{'is-invalid':submitted && addForm.get('eq_name')?.errors}"
+                  (change)="check($event)"
+                    formControlName="eq_name"
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    placeholder="Equipment Name"
+                  />
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      isEquipment === true &&
+                      addForm.get('eq_name')?.value !== ''
+                    "
+                  >
+                    {{ "Equipment already exists" }}
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="code" class="form-label">Equipment Code</label>
+                  <input
+                  [ngClass]="{'is-invalid':submitted && addForm.get('code')?.errors}"
+                  (change)="check2($event)"
+                    formControlName="code"
+                    type="text"
+                    class="form-control"
+                    id="code"
+                    placeholder="Equipment Code"
+                  />
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      isCode === true &&
+                      addForm.get('code')?.value !== ''
+                    "
+                  >
+                    {{ "Equipment code already exists" }}
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="manufacture" class="form-label"
+                    >manufacturer</label
+                  >
+                  <input
+                  [ngClass]="{'is-invalid':submitted && addForm.get('manufacturer')?.errors}"
+                    formControlName="manufacturer"
+                    type="text"
+                    class="form-control"
+                    id="manufacture"
+                    placeholder="manufacturer"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="purchaseprice" class="form-label"
+                    >Purchase Price</label
+                  >
+                  <input
+                  [ngClass]="{'is-invalid':submitted && addForm.get('purchaseprice')?.errors}"
+                    formControlName="purchaseprice"
+                    type="number"
+                    class="form-control"
+                    id="purchaseprice"
+                    placeholder="manufacturer"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="warentydate" class="form-label"
+                    >Warenty Date</label
+                  >
+                  <input
+                  [ngClass]="{'is-invalid':submitted && addForm.get('warentydate')?.errors}"
+                    type="date"
+                    class="form-control"
+                    id="warentydate"
+                    formControlName="warentydate"
+                  />
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="Owner" class="form-label">OwnerShip</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && addForm.get('owernership')?.errors}"
+                    formControlName="owernership"
+                    class="form-select"
+                    id="Owner"
+                    aria-label="Default select example"
+                  >
+                    <option selected *ngIf="start<1">Select OwnerShip</option>
+                    <option>Self</option>
+                    <option>Partner</option>
+                  </select>
+                </div>
+                <div
+                  class="col col-md-4"
+                  *ngIf="addForm.get('owernership')?.value === 'Partner'"
+                >
+                  <label for="partner" class="form-label">Select Partner</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && addForm.get('partner')?.errors}"
+                    formControlName="partner"
+                    class="form-select"
+                    id="partner"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select Partner</option>
+                    <option *ngFor="let i of partners">
+                      {{ i.partner_name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="status" class="form-label">Select Status</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && addForm.get('status')?.errors}"
+                    formControlName="status"
+                    class="form-select"
+                    id="status"
+                    aria-label="Default select example"
+                  >
+                    <option selected *ngIf="start<1">Select Status</option>
+                    <option>Active</option>
+                    <option>Maintanance</option>
+                    <option>Scrap</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="country" class="form-label">Country</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && addForm.get('country')?.errors}"
+                    formControlName="country"
+                    (change)="getStates($event)"
+                    class="form-select"
+                    id="country"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select Country</option>
+                    <option *ngFor="let i of globalData">
+                      {{ i.country }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="state" class="form-label">State</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && addForm.get('state')?.errors}"
+                    formControlName="state"
+                    (change)="getCities($event)"
+                    class="form-select"
+                    id="state"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select State</option>
+                    <option *ngFor="let i of states">{{ i.name }}</option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="city" class="form-label">City</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && addForm.get('city')?.errors}"
+                    formControlName="city"
+                    class="form-select"
+                    id="city"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select City</option>
+                    <option *ngFor="let i of cities">{{ i.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="area" class="form-label">Detail Address</label>
+                  <input
+                  [ngClass]="{'is-invalid':submitted && addForm.get('area')?.errors}"
+                    formControlName="area"
+                    type="text"
+                    id="area"
+                    class="form-control"
+                    placeholder="Area ,Address"
+                  />
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col col-md-4">
+                  <button
+                    (click)="submit()"
+                    type="submit"
+                    class="btn btn-primary lift text-uppercase"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="row m-0 mt-2"
+        *ngIf="showAddForm === false && showEditForm === true"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="h5">Edit Equipment</div>
+            <form [formGroup]="editForm">
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="date" class="form-label">Date</label>
+                  <input
+                  [ngClass]="{'is-invalid':submitted && editForm.get('date')?.errors}"
+                    type="date"
+                    class="form-control"
+                    id="date"
+                    formControlName="date"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="name" class="form-label">Equipment Name</label>
+                  <input
+                  [ngClass]="{'is-invalid':submitted && editForm.get('eq_name')?.errors}"
+                    (change)="check($event)"
+                    formControlName="eq_name"
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    placeholder="Equipment Name"
+                  />
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      isEquipment === true &&
+                      editForm.get('eq_name')?.value !== ''
+                    "
+                  >
+                    {{ "Equipment already exists" }}
+                  </div>
+                </div>
+                <div class="col col-md-4">
+                  <label for="code" class="form-label">Equipment Code</label>
+                  <input
+                  [ngClass]="{'is-invalid':submitted && editForm.get('code')?.errors}"
+                  (change)="check2($event)"
+                    formControlName="code"
+                    type="text"
+                    class="form-control"
+                    id="code"
+                    placeholder="Equipment Code"
+                  />
+                  <div
+                    class="text-danger"
+                    *ngIf="
+                      isCode === true &&
+                      editForm.get('code')?.value !== ''
+                    "
+                  >
+                    {{ "Equipment code already exists" }}
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="manufacture" class="form-label"
+                    >manufacturer</label
+                  >
+                  <input
+                  [ngClass]="{'is-invalid':submitted && editForm.get('manufacturer')?.errors}"
+                    formControlName="manufacturer"
+                    type="text"
+                    class="form-control"
+                    id="manufacture"
+                    placeholder="manufacturer"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="purchaseprice" class="form-label"
+                    >Purchase Price</label
+                  >
+                  <input
+                  [ngClass]="{'is-invalid':submitted && editForm.get('purchaseprice')?.errors}"
+                    formControlName="purchaseprice"
+                    type="number"
+                    class="form-control"
+                    id="purchaseprice"
+                    placeholder="manufacturer"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="warentydate" class="form-label"
+                    >Warenty Date</label
+                  >
+                  <input
+                  [ngClass]="{'is-invalid':submitted && editForm.get('warentydate')?.errors}"
+                    type="date"
+                    class="form-control"
+                    id="warentydate"
+                    formControlName="warentydate"
+                  />
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="Owner" class="form-label">OwnerShip</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && editForm.get('owernership')?.errors}"
+                    formControlName="owernership"
+                    class="form-select"
+                    id="Owner"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select OwnerShip</option>
+                    <option>Self</option>
+                    <option>Partner</option>
+                  </select>
+                </div>
+                <div
+                  class="col col-md-4"
+                  *ngIf="editForm.get('owernership')?.value === 'Partner'"
+                >
+                  <label for="partner" class="form-label">Select Partner</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && editForm.get('partner')?.errors}"
+                    formControlName="partner"
+                    class="form-select"
+                    id="partner"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select Partner</option>
+                    <option *ngFor="let i of partners">
+                      {{ i.partner_name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="status" class="form-label">Select Status</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && editForm.get('status')?.errors}"
+                    formControlName="status"
+                    class="form-select"
+                    id="status"
+                    aria-label="Default select example"
+                  >
+                    
+                    <option selected>Active</option>
+                    <option>Maintanance</option>
+                    <option>Scrap</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="country" class="form-label">Country</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && editForm.get('country')?.errors}"
+                    formControlName="country"
+                    (change)="getStates($event)"
+                    class="form-select"
+                    id="country"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select Country</option>
+                    <option *ngFor="let i of globalData">
+                      {{ i.country }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="state" class="form-label">State</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && editForm.get('state')?.errors}"
+                    formControlName="state"
+                    (change)="getCities($event)"
+                    class="form-select"
+                    id="state"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select State</option>
+                    <option *ngFor="let i of states">{{ i.name }}</option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="city" class="form-label">City</label>
+                  <select
+                  [ngClass]="{'is-invalid':submitted && editForm.get('city')?.errors}"
+                    formControlName="city"
+                    class="form-select"
+                    id="city"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Select City</option>
+                    <option *ngFor="let i of cities">{{ i.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col col-md-4">
+                  <label for="area" class="form-label">Detail Address</label>
+                  <input
+                  [ngClass]="{'is-invalid':submitted && editForm.get('area')?.errors}"
+                    formControlName="area"
+                    type="text"
+                    id="area"
+                    class="form-control"
+                    placeholder="Area ,Address"
+                  />
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col col-md-4">
+                  <button
+                    (click)="updateEquipment()"
+                    type="submit"
+                    class="btn btn-primary lift text-uppercase"
+                  >
+                    Update
+                  </button>
+                  <button
+                    class="btn lift text-uppercase btn-danger"
+                    id="cancel"
+                    (click)="cancel()"
+                    type="submit"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-0 mt-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-8">
+                <div class="h5">Equipment Data</div>
+              </div>
+              <div class="col col-md-4">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search"
+                  [(ngModel)]="searchText"
+                />
+              </div>
+            </div>
+            <div class="row mt-1 text-center" id="table">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Equipment Name</th>
+                    <th>Code</th>
+                    <th>Manufacturer</th>
+                    <th>Purchase Price</th>
+                    <th>Warenty Date</th>
+                    <th>OwnerShip</th>
+                    <th>Partner</th>
+                    <th>Address</th>
+                    <th style="min-width: 160px">Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i of tableData | search : searchText">
+                    <td>{{ i.date }}</td>
+                    <td>{{ i.eq_name }}</td>
+                    <td>{{ i.code }}</td>
+                    <td>{{ i.manufacturer }}</td>
+                    <td>{{ i.purchaseprice }}</td>
+                    <td>{{ i.warentydate }}</td>
+                    <td>{{ i.owernership }}</td>
+                    <td>{{ i.partner }}</td>
+                    <td>
+                      <div>{{ i.country }}</div>
+                      <div>{{ i.state + " , " + i.city }}</div>
+                      <div>{{ i.area }}</div>
+                    </td>
+                    <td>
+                      <select
+                        (change)="status(i._id, $event)"
+                        class="form-select"
+                        aria-label="Default select example"
+                      >
+                        <option selected>
+                          {{ i.status }}
+                        </option>
+                        <option value="Active">Active</option>
+                        <option value="Maintanance">Maintanance</option>
+                        <option value="Scrap">Scrap</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button
+                        (click)="getEditData(i)"
+                        class="btn btn-secondary lift edit-btn"
+                       
+                        type="button"
+                      >
+                        <span class="material-symbols-outlined"> edit </span>
+                      </button>
+                      <button
+                        (click)="getDeleteId(i._id)"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deletemodal"
+                        class="btn btn-danger lift delete delete-btn"
+                       
+                      >
+                        <span class="material-symbols-outlined"> delete </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row" *ngIf="tableArray.length > tableData.length">
+              <div class="col col-md-10"></div>
+              <div class="col col-md-2">
+                <nav aria-label="Page navigation example" id="pagination">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="end > 5"
+                        (click)="
+                          start = start - 5; end = end - 5; getAllEquipments()
+                        "
+                      >
+                        Previous
+                      </button>
+                    </li>
+
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="tableArray.length > tableData.length"
+                        (click)="
+                          start = start + 5; end = end + 5; getAllEquipments()
+                        "
+                      >
+                        Next
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal fade"
+        id="deletemodal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Delete Warning
+              </h1>
+            </div>
+            <div class="modal-body">Are you sure want to Delete ?</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                (click)="deleteEquipment()"
+                type="button"
+                class="btn btn-danger lift text-uppercase"
+                data-bs-dismiss="modal"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

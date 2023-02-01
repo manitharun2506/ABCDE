@@ -1,0 +1,315 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+    <div class="container" id="container">
+      <div
+        class="row mt-2 m-0"
+        *ngIf="showAddForm === true && showEditForm === false"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="h5">Add Expence Type</div>
+            </div>
+            <div class="row mt-2">
+              <form [formGroup]="addForm">
+                <div class="row">
+                  <div class="col col-md-4">
+                    <label for="expence" class="form-label"
+                      >Expence Type*</label
+                    >
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && addForm.get('expencetype')?.errors
+                      }"
+                      (keyup)="check($event)"
+                      formControlName="expencetype"
+                      type="text"
+                      maxlength="40"
+                      class="form-control"
+                      id="expence"
+                      placeholder="Expence type"
+                    />
+                    <div
+                      class="text-danger"
+                      *ngIf="
+                        isexpence === true &&
+                        addForm.get('expencetype')?.value !== ''
+                      "
+                    >
+                      {{ "expencetype already exists" }}
+                    </div>
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && addForm.get('expencetype')?.errors?.['noWhitespaceValidator']"
+                    >
+                      {{ "First letter should be Charecter" }}
+                    </div>
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && addForm.get('expencetype')?.errors?.['nameValidator']"
+                    >
+                      {{ "No Special Charecters are Allowed" }}
+                    </div>
+                  </div>
+                  <div class="col col-md-4">
+                    <br />
+                    <input
+                      formControlName="effectequipment"
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Effect Equipment
+                    </label>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col col-md-4">
+                    <button
+                      class="btn lift text-uppercase btn-primary"
+                      type="submit"
+                      (click)="submit()"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="row mt-2 m-0"
+        *ngIf="showAddForm === false && showEditForm === true"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="h5">Edit Expence Type</div>
+            </div>
+            <div class="row mt-2">
+              <form [formGroup]="editForm">
+                <div class="row">
+                  <div class="col col-md-4">
+                    <label for="expence" class="form-label"
+                      >Expence Type*</label
+                    >
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && editForm.get('expencetype')?.errors
+                      }"
+                      (keyup)="check($event)"
+                      formControlName="expencetype"
+                      type="text"
+                      maxlength="40"
+                      class="form-control"
+                      id="expence"
+                      placeholder="Expence type"
+                    />
+                    <div
+                      class="text-danger"
+                      *ngIf="
+                        isexpence === true &&
+                        editForm.get('expencetype')?.value !== ''
+                      "
+                    >
+                      {{ "expencetype already exists" }}
+                    </div>
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && editForm.get('expencetype')?.errors?.['noWhitespaceValidator']"
+                    >
+                      {{ "First letter should be Charecter" }}
+                    </div>
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && editForm.get('expencetype')?.errors?.['nameValidator']"
+                    >
+                      {{ "No Special Charecters are Allowed" }}
+                    </div>
+                  </div>
+                  <div class="col col-md-4">
+                    <br />
+                    <input
+                      formControlName="effectequipment"
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Effect Equipment
+                    </label>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col col-md-4">
+                    <button
+                      class="btn lift text-uppercase btn-primary"
+                      type="submit"
+                      (click)="updateExpenceType()"
+                    >
+                      Submit
+                    </button>
+                    <button
+                      class="btn lift text-uppercase btn-danger"
+                      id="cancel"
+                      (click)="cancel()"
+                      type="submit"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3 m-0">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-8">
+                <div class="h5">Expence Type Data</div>
+              </div>
+              <div class="col col-md-4">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search"
+                  [(ngModel)]="searchText"
+                />
+              </div>
+            </div>
+            <div class="row mt-2 text-center">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Expence Type</th>
+                    <th>Effect Equipment</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let j = index;
+                      let i;
+                      of: tableData | search : searchText
+                    "
+                  >
+                    <td>{{ j + 1 }}</td>
+                    <td>{{ i.expencetype }}</td>
+                    <td *ngIf="i.effectequipment === true">{{ "yes" }}</td>
+                    <td *ngIf="i.effectequipment === false">{{ "no" }}</td>
+                    <td>
+                      <button
+                        (click)="getEditData(i)"
+                        class="btn btn-secondary lift edit-btn"
+                        type="button"
+                      >
+                        <span class="material-symbols-outlined"> edit </span>
+                      </button>
+                      <button
+                        (click)="getDeleteId(i._id)"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deletemodal"
+                        class="btn btn-danger lift delete-btn"
+                      >
+                        <span class="material-symbols-outlined"> delete </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row" *ngIf="tableArray.length > tableData.length">
+              <div class="col col-md-9"></div>
+              <div class="col col-md-3">
+                <nav aria-label="Page navigation example" id="pagination">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="end > 5"
+                        (click)="
+                          start = start - 5; end = end - 5; getAllExpenceTypes()
+                        "
+                      >
+                        Previous
+                      </button>
+                    </li>
+
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="tableArray.length > tableData.length"
+                        (click)="
+                          start = start + 5; end = end + 5; getAllExpenceTypes()
+                        "
+                      >
+                        Next
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="deletemodal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Delete Warning
+            </h1>
+          </div>
+          <div class="modal-body">Are you sure want to Delete ?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              (click)="deleteExpencetype()"
+              type="button"
+              class="btn btn-danger lift text-uppercase"
+              data-bs-dismiss="modal"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

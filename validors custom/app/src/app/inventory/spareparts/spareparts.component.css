@@ -1,0 +1,12 @@
+#container {
+    height: 42rem;
+    overflow-y: scroll;
+  }
+  #table{
+    width: 100%;
+    white-space: nowrap;
+  overflow-x: scroll;
+  }
+  #cancel{
+    margin-left: 2%;
+  }

@@ -1,0 +1,10 @@
+#container {
+  height: 42rem;
+  overflow-y: scroll;
+}
+#submit {
+  margin-left: 25%;
+}
+#cancel {
+  margin-left: 2%;
+}

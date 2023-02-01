@@ -1,0 +1,207 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+    <div class="container" id="container">
+      <div class="row mt-3 m-0">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-8">
+                <div class="h5">Finished Tasks</div>
+              </div>
+              <div class="col col-md-4">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search"
+                  [(ngModel)]="searchText"
+                />
+              </div>
+            </div>
+            <div class="row text-center mt-4">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Task ID</th>
+                    <th>Assigned Date</th>
+                    <th>Customer</th>
+                    <th>Location</th>
+                    <th>Price</th>
+                    <th>Equipment Name</th>
+                    <th>Task Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i of completedTasks | search : searchText">
+                    <td>{{ i.taskid }}</td>
+                    <td>{{ i.date }}</td>
+                    <td>{{ i.customer }}</td>
+                    <td>{{ i.location }}</td>
+                    <td>{{ i.price }}</td>
+                    <td>{{ i.eq_name }}</td>
+                    <td>
+                      <button
+                        (click)="getTaskData(i._id)"
+                        class="btn btn-primary lift edit-btn"
+                        data-bs-target="#exampleModalToggle"
+                        data-bs-toggle="modal"
+                      >
+                        Task Details
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal"
+        id="exampleModalToggle"
+        aria-hidden="true"
+        aria-labelledby="exampleModalToggleLabel"
+        tabindex="-1"
+      >
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel">
+                Task Details
+              </h1>
+              <button
+                id="x1"
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- Show a second modal and hide this one with the button below. -->
+              <div class="row text-center" id="table">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Equipment Number</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
+                      <th>Total Used Hours</th>
+                      <th>Start Reading</th>
+                      <th>End Reading</th>
+                      <th>Closing Balance</th>
+                      <th>Remarks</th>
+                      <th>Shift</th>
+                      <th>Assigned Employee</th>
+                      <th>Equipment Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ this.taskData.eq_num }}</td>
+                      <td>{{ this.taskData.starttime }}</td>
+                      <td>{{ this.taskData.endtime }}</td>
+                      <td>{{ this.taskData.totalhoursused }}</td>
+                      <td>{{ this.taskData.startreading }}</td>
+                      <td>{{ this.taskData.endreading }}</td>
+                      <td>{{ this.taskData.closingBal }}</td>
+                      <td>{{ this.taskData.remarks }}</td>
+                      <td>{{ this.taskData.shift }}</td>
+                      <td>{{ this.taskData.assignedemp }}</td>
+                      <td>{{ this.taskData.eq_status }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row">
+                <div class="col col-md-4"></div>
+                <div class="col col-md-4">
+                  <button
+                    (click)="getRefillDataByTaskId()"
+                    id="refill"
+                    type="button"
+                    class="btn btn-primary mt-1 lift edit-btn"
+                    data-bs-target="#exampleModalToggle2"
+                    data-bs-toggle="modal"
+                  >
+                    View Refill
+                  </button>
+                </div>
+                <div class="col col-md-4"></div>
+              </div>
+            </div>
+            <!-- <div class="modal-footer">
+              
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal"
+        id="exampleModalToggle2"
+        aria-hidden="true"
+        aria-labelledby="exampleModalToggleLabel2"
+        tabindex="-1"
+      >
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
+                Refill Details
+              </h1>
+              <button
+                id="x"
+                type="button"
+                class="btn-close"
+                data-bs-target="#exampleModalToggle"
+                data-bs-toggle="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- Hide this modal and show the first with the button below. -->
+              <div class="row text-center">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Refill Number</th>
+                      <th>Opening Balance</th>
+                      <th>Closing Balance</th>
+                      <th>Start Reading</th>
+                      <th>End Reading</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let i of refillData">
+                      <td>{{ i.refillnum }}</td>
+                      <td>{{ i.openingbalance }}</td>
+                      <td>{{ i.closingbalance }}</td>
+                      <td>{{ i.startreading }}</td>
+                      <td>{{ i.endreading }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- <div class="modal-footer">
+            <button
+              class="btn btn-secondary lift edit-btn"
+              data-bs-target="#exampleModalToggle"
+              data-bs-toggle="modal"
+            >
+              Back to Form
+            </button>
+          </div> -->
+          </div>
+        </div>
+      </div>
+
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

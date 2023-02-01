@@ -1,0 +1,221 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+    <div class="container" id="container">
+      <div class="row mt-2 m-0">
+        <form [formGroup]="addForm">
+          <div class="row">
+            <div formArrayName="tasks">
+              <div
+                *ngFor="let task of TasksControls; let i = index"
+                [formGroupName]="i"
+              >
+                <div class="card mt-3">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col col-md-4">
+                        <div class="h5">Assign Task</div>
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col col-md-4">
+                        <label for="date" class="form-label">Date</label>
+                        <input
+                          type="date"
+                          id="date"
+                          class="form-control"
+                          formControlName="date"
+                        />
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="time" class="form-label">Start Time</label>
+                        <input
+                          type="time"
+                          id="time"
+                          class="form-control"
+                          formControlName="starttime"
+                        />
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="location" class="form-label"
+                          >Task Location</label
+                        >
+                        <input
+                          formControlName="location"
+                          type="text"
+                          id="location"
+                          class="form-control"
+                          placeholder="Location"
+                        />
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col col-md-4">
+                        <label for="shift" class="form-label"
+                          >Select Shift</label
+                        >
+                        <select
+                          formControlName="shift"
+                          id="shift"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Select Shift</option>
+                          <option *ngFor="let i of shifts">
+                            {{ i.shift }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="equip" class="form-label"
+                          >Select Equipment</label
+                        >
+                        <select
+                          formControlName="eq_name"
+                          (change)="setEq_Details($event)"
+                          id="equip"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Select Equipment</option>
+                          <option *ngFor="let i of equipmentsData">
+                            {{ i.eq_name }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="eq_num" class="form-label"
+                          >Equipment Number</label
+                        >
+                        <input
+                          formControlName="eq_num"
+                          id="eq_num"
+                          readonly
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="this.eq_num"
+                          name="first"
+                        />
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col col-md-4">
+                        <label for="openbal" class="form-label"
+                          >Opening Balance</label
+                        >
+                        <input
+                          (change)="updateOpening_bal($event)"
+                          formControlName="openingbalance"
+                          id="openbal"
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="this.openiningBalance"
+                          name="first"
+                        />
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="emp" class="form-label"
+                          >Assign Employee</label
+                        >
+                        <select
+                          formControlName="assignedemp"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Assign Employee</option>
+                          <option *ngFor="let i of employeeData">
+                            {{ i.emp_name }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="cust_name" class="form-label"
+                          >Select Customer</label
+                        >
+                        <select
+                          formControlName="customer"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Select Customer</option>
+                          <option *ngFor="let i of customersData">
+                            {{ i.cust_name + " | " + i.ph_no }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col col-md-4">
+                        <label for="reading" class="form-label"
+                          >Start Reading</label
+                        >
+                        <input
+                          formControlName="startreading"
+                          type="number"
+                          class="form-control"
+                          placeholder="Start reading"
+                        />
+                      </div>
+                      <!-- <div class="col col-md-4">
+                        <label for="taskid" class="form-label">Task ID</label>
+                        <input
+                          formControlName="taskid"
+                          type="number"
+                          class="form-control"
+                          placeholder="task ID should be Unique"
+                        />
+                      </div> -->
+                      <div class="col col-md-4">
+                        <button
+                          *ngIf="this.formArr.length !== 1"
+                          (click)="deleteRow(i)"
+                          class="btn btn-danger delete-btn lift mt-4"
+                          type="button"
+                        >
+                          <span class="material-symbols-outlined">
+                            remove
+                          </span>
+                        </button>
+                        <button
+                          id="btn1"
+                          class="btn btn-primary edit-btn lift mt-4"
+                          type="button"
+                          (click)="addnewRow()"
+                        >
+                          <span class="material-symbols-outlined"> add </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="row mt-2">
+                <div class="col col-md-4"></div>
+                <div class="col col-md-4">
+                  <button
+                    id="submit"
+                    class="btn btn-primary lift text-uppercase"
+                    type="submit"
+                    (click)="submit()"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

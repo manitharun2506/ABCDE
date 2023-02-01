@@ -1,0 +1,698 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+    <div class="container" id="container">
+      <div
+        class="row mt-2 m-0"
+        *ngIf="showAddForm === true && showEditForm === false"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-8"></div>
+              <div class="col col-md-4">
+                <button
+                  class="btn lift btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  type="button"
+                >
+                  View All Customer Pending Payments
+                </button>
+              </div>
+            </div>
+            <div class="h5 mt-4">Add Payment</div>
+            <div class="row">
+              <form [formGroup]="addForm">
+                <div formArrayName="items">
+                  <div
+                    *ngFor="let item of itemControls; let i = index"
+                    [formGroupName]="i"
+                  >
+                    <div class="row">
+                      <div class="col col-md-4">
+                        <label for="shift" class="form-label"
+                          >Select Shift</label
+                        >
+                        <select
+                          formControlName="shift"
+                          id="shift"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Select Shift</option>
+                          <option *ngFor="let i of shiftData">
+                            {{ i.shift }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="customer" class="form-label"
+                          >Customer</label
+                        >
+                        <select
+                          (change)="setTaskid($event)"
+                          formControlName="customer"
+                          id="customer"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Select Customer</option>
+                          <option *ngFor="let i of allPendingPaymentsData">
+                            {{ i.customer }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="date" class="form-label">Date</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          formControlName="date"
+                        />
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col col-md-4">
+                        <label for="taskid" class="form-label"
+                          >Select Task ID</label
+                        >
+                        <select
+                          (change)="setBalanceAmount($event, i)"
+                          formControlName="taskid"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Select Task ID</option>
+                          <option *ngFor="let i of taskIds">{{ i }}</option>
+                        </select>
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="totalamount" class="form-label"
+                          >Amount to Pay</label
+                        >
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="totalamount"
+                          formControlName="totalamount"
+                        />
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="paidamount" class="form-label"
+                          >Paid Amount</label
+                        >
+                        <input
+                          (keyup)="setPendingamt($event, i)"
+                          type="number"
+                          class="form-control"
+                          id="paidamount"
+                          formControlName="paidamount"
+                        />
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col col-md-4">
+                        <label for="paymentmode" class="form-label"
+                          >Payment Mode</label
+                        >
+                        <select
+                          formControlName="paymentmode"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>{{ "Select Payment mode" }}</option>
+                          <option value="GooglePay">GooglePay</option>
+                          <option value="PhonePay">PhonePay</option>
+                          <option value="Cash">Cash</option>
+                          <option value="Card">Card</option>
+                        </select>
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="balance amount" class="form-label"
+                          >Balance Amount</label
+                        >
+                        <input
+                          type="number"
+                          class="form-control"
+                          formControlName="balanceamount"
+                        />
+                      </div>
+                      <div class="col col-md-4">
+                        <label for="emp" class="form-label">Collected By</label>
+                        <select
+                          formControlName="collectedby_emp"
+                          class="form-select"
+                          aria-label="Default select example"
+                        >
+                          <option selected>Select Employee</option>
+                          <option *ngFor="let i of employeeData">
+                            {{ i.emp_name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col col-md-8"></div>
+                      <div class="col col-md-4">
+                        <button
+                          *ngIf="this.formArr.length !== 1"
+                          (click)="deleteRow(i)"
+                          class="btn btn-danger delete-btn lift mt-4"
+                          type="button"
+                        >
+                          <span class="material-symbols-outlined">
+                            remove
+                          </span>
+                        </button>
+                        <button
+                          style="margin-left: 9px"
+                          class="btn btn-primary edit-btn lift mt-4"
+                          type="button"
+                          (click)="addnewRow()"
+                        >
+                          <span class="material-symbols-outlined"> add </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="row mt-2">
+              <div class="col col-md-4"></div>
+              <div class="col col-md-4">
+                <button
+                  id="submit"
+                  class="btn btn-primary lift text-uppercase"
+                  type="submit"
+                  (click)="submit()"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="row mt-2 m-0"
+        *ngIf="showAddForm === false && showEditForm === true"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-8"></div>
+              <div class="col col-md-4">
+                <button
+                  class="btn lift btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  type="button"
+                >
+                  View All Customer Pending Payments
+                </button>
+              </div>
+            </div>
+            <div class="h5">Edit Payment</div>
+            <form [formGroup]="editForm">
+              <div class="row mt-3">
+                <div class="col col-md-4">
+                  <label for="date" class="form-label">Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="date"
+                    formControlName="date"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="shift" class="form-label">Select Shift</label>
+                  <select
+                    formControlName="shift"
+                    id="shift"
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>{{ editData.shift }}</option>
+                    <option *ngFor="let i of shiftData">
+                      {{ i.shift }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="customer" class="form-label">Customer</label>
+                  <select
+                    formControlName="customer"
+                    id="customer"
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>{{ editData.customer }}</option>
+                    <option *ngFor="let i of allPendingPaymentsData">
+                      {{ i.customer }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col col-md-4">
+                  <label for="id" class="form-label">Task Id</label>
+                  <input
+                    type="text"
+                    readonly
+                    class="form-control"
+                    formControlName="taskid"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="totalamount" class="form-label"
+                    >Total Amount</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="totalamount"
+                    formControlName="totalamount"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="paidamount" class="form-label">Paid Amount</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="paidamount"
+                    formControlName="paidamount"
+                  />
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col col-md-4">
+                  <label for="paymentmode" class="form-label"
+                    >Payment Mode</label
+                  >
+                  <select
+                    formControlName="paymentmode"
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>{{ "Select Payment mode" }}</option>
+                    <option value="GooglePay">GooglePay</option>
+                    <option value="PhonePay">PhonePay</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Card">Card</option>
+                  </select>
+                </div>
+                <div class="col col-md-4">
+                  <label for="balance amount" class="form-label"
+                    >Balance Amount</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="balanceamount"
+                  />
+                </div>
+                <div class="col col-md-4">
+                  <label for="emp" class="form-label">Collected By</label>
+                  <select
+                    formControlName="collectedby_emp"
+                    class="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>{{ editData.collectedby_emp }}</option>
+                    <option *ngFor="let i of employeeData">
+                      {{ i.emp_name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col col-md-4">
+                  <label for="location" class="form-label">Task Location</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="location"
+                  />
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col col-md-4">
+                  <button
+                    (click)="updatePayment()"
+                    type="submit"
+                    class="btn btn-primary lift text-uppercase"
+                  >
+                    Update
+                  </button>
+                  <button
+                    class="btn lift text-uppercase btn-danger"
+                    id="cancel"
+                    (click)="cancel()"
+                    type="submit"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-3 m-0">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-8">
+                <div class="h5">Payments Data</div>
+              </div>
+              <div class="col col-md-4">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search Table"
+                  [(ngModel)]="searchTable"
+                />
+              </div>
+            </div>
+            <div class="row mt-2 text-center" id="table2">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>CustomerName | Contact Number</th>
+                    <th>TaskID</th>
+                    <th>Paid amount</th>
+                    <th>Payment Mode</th>
+                    <th>view Bill</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let i of paymentsTable | search : searchTable">
+                    <td>{{ i.date }}</td>
+                    <td>{{ i.customer }}</td>
+                    <td>{{ i.taskid }}</td>
+                    <td>{{ i.paidamount }}</td>
+                    <td>{{ i.paymentmode }}</td>
+                    <td>
+                      <button
+                        (click)="getBill(i)"
+                        type="button"
+                        class="btn btn-primary lift text-uppercase edit-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#billModal"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          width="18"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        (click)="getEditData(i)"
+                        class="btn btn-secondary lift edit-btn"
+                        type="button"
+                      >
+                        <span class="material-symbols-outlined"> edit </span>
+                      </button>
+                      <button
+                        (click)="getDeleteId(i._id)"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deletemodal"
+                        class="btn btn-danger lift delete delete-btn"
+                      >
+                        <span class="material-symbols-outlined"> delete </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row" *ngIf="allPayments.length > paymentsTable.length">
+              <div class="col col-md-8"></div>
+              <div class="col col-md-4">
+                <nav aria-label="Page navigation example" id="pagination">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="end > 5"
+                        (click)="
+                          start = start - 5; end = end - 5; getAllPayments()
+                        "
+                      >
+                        Previous
+                      </button>
+                    </li>
+
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="allPayments.length > paymentsTable.length"
+                        (click)="
+                          start = start + 5; end = end + 5; getAllPayments()
+                        "
+                      >
+                        Next
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Customer Pending Payments
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col col-md-8"></div>
+                <div class="col col-md-4">
+                  <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search Table"
+                    [(ngModel)]="searchText"
+                  />
+                </div>
+              </div>
+              <div class="row mt-2 text-center" id="table">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Customer Name | phone Number</th>
+                      <th>Location</th>
+                      <th>Recovery Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let i of allPendingPaymentsData | search : searchText
+                      "
+                    >
+                      <td>{{ i.customer }}</td>
+                      <td>{{ i.location }}</td>
+                      <td>{{ i.balanceamount }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div
+                class="row"
+                *ngIf="tableArray.length > allPendingPaymentsData.length"
+              >
+                <div class="col col-md-9"></div>
+                <div class="col col-md-3">
+                  <nav aria-label="Page navigation example" id="pagination">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <button
+                          class="page-link"
+                          *ngIf="end > 5"
+                          (click)="
+                            start = start - 5;
+                            end = end - 5;
+                            getAllPendingPayments()
+                          "
+                        >
+                          Previous
+                        </button>
+                      </li>
+
+                      <li class="page-item">
+                        <button
+                          class="page-link"
+                          *ngIf="
+                            tableArray.length > allPendingPaymentsData.length
+                          "
+                          (click)="
+                            start = start + 5;
+                            end = end + 5;
+                            getAllPendingPayments()
+                          "
+                        >
+                          Next
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-danger lift"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal fade"
+        id="deletemodal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Delete Warning
+              </h1>
+            </div>
+            <div class="modal-body">Are you sure want to Delete ?</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                (click)="deletePayment()"
+                type="button"
+                class="btn btn-danger lift text-uppercase"
+                data-bs-dismiss="modal"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal fade"
+        id="billModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Bill Details
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row text-center">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Payment ID</th>
+                      <th>TaskId</th>
+                      <th>Date</th>
+                      <th>Customer Name | Contact number</th>
+                      <th>location</th>
+                      <th>Total Amount</th>
+                      <th>Paid Amount</th>
+                      <th>Payment Mode</th>
+                      <th>Balance Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ viewBill.paymentid }}</td>
+                      <td>{{ viewBill.taskid }}</td>
+                      <td>{{ viewBill.date }}</td>
+                      <td>{{ viewBill.customer }}</td>
+                      <td>{{ viewBill.location }}</td>
+                      <td>{{ viewBill.totalamount }}</td>
+                      <td>{{ viewBill.paidamount }}</td>
+                      <td>{{ viewBill.paymentmode }}</td>
+                      <td>{{ viewBill.balanceamount }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-primary">Download</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+#container{
+  
+    height: 42rem;
+    overflow-y: scroll;
+}
+
+#cancel{
+    margin-left: 2%;
+    margin-top: 8.5%;
+  }
+
+#img{
+    border-radius: 50%;
+}
+#btn{
+    width: 10%;
+    margin-left: 1%;
+}
+#dbtn{
+    margin-left: 2%;
+    width: 45px;
+    height: 38px;
+}
+#pagination{
+    margin-left:50%;
+}

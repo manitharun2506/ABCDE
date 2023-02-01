@@ -1,0 +1,16 @@
+#btn{
+    border-style: none;
+    background-color: transparent;
+}
+.sidebar-mini .hide-large{
+    display: block;
+}
+
+.hide-large{
+    display: none;
+}
+.logout-text{
+    position: relative;
+    top: 1px;
+    right: 5px;
+}

@@ -1,0 +1,636 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+
+    <div class="container" id="container">
+      <div
+        class="row mt-2 m-0"
+        *ngIf="showAddForm === true && showEditForm === false"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="h5">Add Supplier</div>
+              <form [formGroup]="addForm">
+                <div class="row mt-3">
+                  <div class="col col-md-4">
+                    <label for="name" class="form-label">Supplier Name *</label>
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && addForm.get('supplier_name')?.errors
+                      }"
+                      formControlName="supplier_name"
+                      id="name"
+                      maxlength="20"
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter Name"
+                    />
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && addForm.get('supplier_name')?.errors?.['nameValidator']"
+                    >
+                      {{ "Name should not contains Special Charecters" }}
+                    </div>
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && addForm.get('supplier_name')?.errors?.['noWhitespaceValidator']"
+                    >
+                      {{ "starting Letter Should be Charecter" }}
+                    </div>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="phonenumber" class="form-label"
+                      >Phone Number *</label
+                    >
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && addForm.get('phone_number')?.errors
+                      }"
+                      formControlName="phone_number"
+                      id="phonenumber"
+                      type="tel"
+                      maxlength="10"
+                      class="form-control"
+                      placeholder="Enter Number"
+                    />
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted&& addForm.get('phone_number')?.errors?.['phoneNumberValidator']"
+                    >
+                      {{ "SpecialCharecters & spaces not Allowed" }}
+                    </div>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="alternatenum" class="form-label"
+                      >Alternate Phone Number</label
+                    >
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted &&
+                          addForm.get('alternate_Ph_number')?.errors
+                      }"
+                      formControlName="alternate_Ph_number"
+                      id="alternatenum"
+                      maxlength="10"
+                      type="tel"
+                      class="form-control"
+                      placeholder="Enter Number"
+                    />
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col col-md-4">
+                    <label for="country" class="form-label"
+                      >Select Country *</label
+                    >
+                    <select
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && addForm.get('country')?.errors
+                      }"
+                      formControlName="country"
+                      (change)="getStates($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected>Select Country</option>
+                      <option *ngFor="let i of globalData">
+                        {{ i.country }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="state" class="form-label">Select State *</label>
+                    <select
+                      [ngClass]="{
+                        'is-invalid': submitted && addForm.get('state')?.errors
+                      }"
+                      formControlName="state"
+                      (change)="getCities($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected>Select State</option>
+                      <option *ngFor="let i of states">{{ i.name }}</option>
+                    </select>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="city" class="form-label">Select City *</label>
+                    <select
+                      [ngClass]="{
+                        'is-invalid': submitted && addForm.get('city')?.errors
+                      }"
+                      formControlName="city"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected>Select City *</option>
+                      <option *ngFor="let i of cities">{{ i.name }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col col-md-4">
+                    <label for="address" class="form-label">Address *</label>
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && addForm.get('address')?.errors
+                      }"
+                      formControlName="address"
+                      type="text"
+                      maxlength="50"
+                      id="address"
+                      class="form-control"
+                      placeholder="Address"
+                    />
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && addForm.get('address')?.errors?.['noWhitespaceValidator']"
+                    >
+                      {{ "Starting Letter should be Charecter" }}
+                    </div>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="photo" class="form-label">Upload Photo *</label>
+                    <input
+                      (change)="selectFile($event)"
+                      [ngClass]="{
+                        'is-invalid': submitted && addForm.get('photo')?.errors
+                      }"
+                      formControlName="photo"
+                      type="file"
+                      name="myImage"
+                      accept="image/png, image/gif, image/jpeg"
+                      id="photo"
+                      class="form-control"
+                      placeholder="Upload Photo"
+                    />
+                    <div class="mt-2">
+                      {{
+                        "file size :5MB" + "(img.png , npg ,jpg are allowed)"
+                      }}
+                    </div>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="amount" class="form-label"
+                      >Opening Amount</label
+                    >
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && addForm.get('opening_amount')?.errors
+                      }"
+                      formControlName="opening_amount"
+                      type="number"
+                      id="amount"
+                      class="form-control"
+                      placeholder="Opening Amount"
+                    />
+                    <div
+                      class="text-danger"
+                      *ngIf="addForm.get('opening_amount')?.errors?.['negativeNumberValidator']"
+                    >
+                      {{ "negitive Value not Allowed" }}
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col col-md-4">
+                    <label for="date" class="form-label">Opening Date *</label>
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && addForm.get('opening_date')?.errors
+                      }"
+                      type="date"
+                      id="date"
+                      class="form-control"
+                      formControlName="opening_date"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col col-md-4"></div>
+                  <div class="col col-md-4">
+                    <button
+                      class="btn lift text-uppercase btn-primary"
+                      style="margin-left: 19%"
+                      (click)="submit()"
+                      type="submit"
+                    >
+                      submit
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="row mt-2 m-0"
+        *ngIf="showAddForm === false && showEditForm === true"
+      >
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="h5">Edit Supplier</div>
+              <form [formGroup]="editForm">
+                <div class="row mt-3">
+                  <div class="col col-md-4">
+                    <label for="name" class="form-label">Supplier Name *</label>
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && editForm.get('supplier_name')?.errors
+                      }"
+                      formControlName="supplier_name"
+                      maxlength="20"
+                      id="name"
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter Name"
+                    />
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && editForm.get('supplier_name')?.errors?.['nameValidator']"
+                    >
+                      {{ "Name should not contains Special Charecters" }}
+                    </div>
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && editForm.get('supplier_name')?.errors?.['noWhitespaceValidator']"
+                    >
+                      {{ "starting Letter Should be Charecter" }}
+                    </div>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="phonenumber" class="form-label"
+                      >Phone Number *</label
+                    >
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && editForm.get('phone_number')?.errors
+                      }"
+                      formControlName="phone_number"
+                      id="phonenumber"
+                      maxlength="10"
+                      type="tel"
+                      class="form-control"
+                      placeholder="Enter Number"
+                    />
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted&& editForm.get('phone_number')?.errors?.['phoneNumberValidator']"
+                    >
+                      {{ "SpecialCharecters &Spaces not Allowed" }}
+                    </div>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="alternatenum" class="form-label"
+                      >Alternate Phone Number</label
+                    >
+                    <input
+                      formControlName="alternate_Ph_number"
+                      id="alternatenum"
+                      maxlength="10"
+                      type="tel"
+                      class="form-control"
+                      placeholder="Enter Number"
+                    />
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col col-md-4">
+                    <label for="country" class="form-label"
+                      >Select Country *</label
+                    >
+                    <select
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && editForm.get('country')?.errors
+                      }"
+                      formControlName="country"
+                      (change)="getStates($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected>{{ editData.country }}</option>
+                      <option *ngFor="let i of globalData">
+                        {{ i.country }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="state" class="form-label">Select State *</label>
+                    <select
+                      [ngClass]="{
+                        'is-invalid': submitted && editForm.get('state')?.errors
+                      }"
+                      formControlName="state"
+                      (change)="getCities($event)"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected>{{ editData.state }}</option>
+                      <option *ngFor="let i of states">{{ i.name }}</option>
+                    </select>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="city" class="form-label">Select City *</label>
+                    <select
+                      [ngClass]="{
+                        'is-invalid': submitted && editForm.get('city')?.errors
+                      }"
+                      formControlName="city"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected>{{ editData.city }}</option>
+                      <option *ngFor="let i of cities">{{ i.name }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col col-md-4">
+                    <label for="address" class="form-label">Address *</label>
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && editForm.get('address')?.errors
+                      }"
+                      formControlName="address"
+                      type="text"
+                      id="address"
+                      maxlength="50"
+                      class="form-control"
+                      placeholder="Address"
+                    />
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="submitted && editForm.get('address')?.errors?.['noWhitespaceValidator']"
+                    >
+                      {{ "Starting Letter should be Charecter" }}
+                    </div>
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="date" class="form-label">Opening Date</label>
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && editForm.get('opening_date')?.errors
+                      }"
+                      type="date"
+                      id="date"
+                      class="form-control"
+                      formControlName="opening_date"
+                    />
+                  </div>
+                  <div class="col col-md-4">
+                    <label for="amount" class="form-label"
+                      >Opening Amount
+                    </label>
+                    <input
+                      [ngClass]="{
+                        'is-invalid':
+                          submitted && editForm.get('opening_amount')?.errors
+                      }"
+                      formControlName="opening_amount"
+                      type="number"
+                      id="amount"
+                      class="form-control"
+                      placeholder="Opening Amount"
+                    />
+                    <div
+                      class="text-danger mt-2"
+                      *ngIf="editForm.get('opening_amount')?.errors?.['negativeNumberValidator']"
+                    >
+                      {{ "negitive Value not Allowed" }}
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col col-md-4">
+                    <label for="photo" class="form-label">Upload Photo</label>
+                   
+                    <input
+                      (change)="selectFile($event)"
+                      [ngClass]="{
+                        'is-invalid': submitted && editForm.get('photo')?.errors
+                      }"
+                      formControlName="photo"
+                      type="file"
+                      id="photo"
+                      class="form-control"
+                      placeholder="Upload Photo"
+                    />
+                    <div class="mt-2">
+                      {{
+                        "file size :5MB" + "(img.png , npg ,jpg are allowed)"
+                      }}
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col col-md-4"></div>
+                  <div class="col col-md-4">
+                    <button
+                      style="margin-left: 15%"
+                      class="btn lift text-uppercase btn-primary"
+                      (click)="update()"
+                      type="submit"
+                    >
+                      submit
+                    </button>
+                    <button
+                      style="margin-left: 2%"
+                      class="btn lift text-uppercase btn-danger"
+                      (click)="cancel()"
+                      type="submit"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-5 m-0">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col col-md-4">
+                <div class="h5">Suppliers Data</div>
+              </div>
+              <div class="col col-md-4"></div>
+              <div class="col col-md-4">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Search"
+                  [(ngModel)]="searchText"
+                />
+              </div>
+            </div>
+            <div class="row mt-4 text-center">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Photo</th>
+                    <th>Opening Amount</th>
+                    <th>Opening Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="
+                      let j = index;
+                      let i;
+                      of: tableData | search : searchText
+                    "
+                  >
+                    <td>{{ j + 1 }}</td>
+                    <td>{{ i.supplier_name }}</td>
+                    <td>
+                      <div>{{ "Ph No:  " + i.phone_number }}</div>
+
+                      <div>
+                        {{ "Alt No:  " + i.alternate_Ph_number }}
+                      </div>
+                    </td>
+                    <td>
+                      <div>{{ i.country + " , " + i.state }}</div>
+                      <div>{{ i.city + " , " + i.address }}</div>
+                    </td>
+                    <td>
+                      <img
+                        id="img"
+                        [src]="envirment.img_url + i.photo"
+                        alt=""
+                        height="45px"
+                        width="45px"
+                      />
+                    </td>
+
+                    <td>
+                      {{ i.opening_amount }}
+                    </td>
+
+                    <td>
+                      {{ i.opening_date }}
+                    </td>
+                    <td>
+                      <button
+                        class="btn lift btn-secondary edit-btn"
+                        type="button"
+                        (click)="getUpdateData(i)"
+                      >
+                        <span class="material-symbols-outlined"> edit </span>
+                      </button>
+                      <button
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                        class="btn lift btn-danger delete-btn"
+                        type="button"
+                        (click)="showModal(i._id)"
+                      >
+                        <span class="material-symbols-outlined"> delete </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row mt-3" *ngIf="tableArray.length > tableData.length">
+              <div class="col col-md-8"></div>
+              <div class="col col-md-4">
+                <nav aria-label="Page navigation example" id="pagination">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="end > 5"
+                        (click)="
+                          start = start - 5; end = end - 5; getAllSuppliers()
+                        "
+                      >
+                        Previous
+                      </button>
+                    </li>
+
+                    <li class="page-item">
+                      <button
+                        class="page-link"
+                        *ngIf="tableArray.length > tableData.length"
+                        (click)="
+                          start = start + 5; end = end + 5; getAllSuppliers()
+                        "
+                      >
+                        Next
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Delete Warning
+            </h1>
+          </div>
+          <div class="modal-body">Are you sure want to Delete ?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger lift"
+              (click)="deleteSupplier()"
+              data-bs-dismiss="modal"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

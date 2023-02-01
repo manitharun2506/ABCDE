@@ -1,0 +1,22 @@
+#setting{
+   height: 2.2rem;
+    border-style: hidden;
+    background-color:transparent;
+    margin-left: 50%;
+}
+
+#setting:hover {
+  color: rgba(0, 124, 128, 0.733);
+  background-color: rgba(105, 105, 105, 0.281);
+}
+#container {
+  height: 42rem;
+  overflow-y: scroll;
+}
+#img{
+  border-radius: 50%;
+}
+
+#cancel{
+  margin-left: 2%;
+}

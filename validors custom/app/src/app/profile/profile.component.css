@@ -1,0 +1,23 @@
+#container {
+  height: 42rem;
+  overflow-y: scroll;
+}
+#img {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+  margin-left: 20px;
+}
+#row1 {
+  height: 290px;
+}
+#setting{
+  height: 2.2rem;
+   border-style: hidden;
+   background-color:transparent;
+   margin-left: 90%;
+}
+#setting:hover {
+  color: rgba(0, 124, 128, 0.733);
+  background-color: rgba(105, 105, 105, 0.281);
+}

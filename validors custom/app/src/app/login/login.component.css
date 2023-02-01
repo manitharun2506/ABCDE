@@ -1,0 +1,4 @@
+.btn.password-addon{
+    box-shadow: none !important;
+    z-index: 9;
+}

@@ -1,0 +1,79 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('toastify-js/src/toastify.css');
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 150,
+  'GRAD' 150,
+  'opsz' 30
+}
+
+.edit-btn, .delete-btn{
+  width: fit-content;
+  padding: 5px 10px !important;
+  box-shadow: 1px 1px 2px 0px #0000009e;
+}
+
+.edit-btn:hover, .delete-btn:hover{
+  background: transparent !important;
+  box-shadow: 1px 1px 2px 0px #000;
+  color: black !important;
+}
+
+.delete-btn:hover{
+  color: red !important;
+}
+
+.edit-btn{
+  margin-right: 5px !important;
+}
+
+.edit-btn span, .delete-btn span {
+  font-size: 17px;
+  line-height: 25px;
+}
+
+
+::-webkit-scrollbar {
+  background: var(--card-color);
+  visibility: visible;
+  width: 4px;
+  height: 4px;
+}
+:hover::-webkit-scrollbar-thumb {
+  background: var(--secondary-color);
+}
+::-webkit-scrollbar-track {
+  visibility: visible;
+  background: 0 0;
+}
+::-webkit-scrollbar-thumb {
+  background: 0 0;
+  visibility: visible;
+}
+
+input[type="date"] {
+  /* border: none; */
+  box-sizing: border-box;
+  outline: 0;
+  /* padding: .75rem; */
+  position: relative;
+  width: 100%;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

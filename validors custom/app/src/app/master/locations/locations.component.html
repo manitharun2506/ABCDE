@@ -1,0 +1,373 @@
+<div class="layout-1" data-luno="theme-blue">
+  <!-- start: sidebar -->
+  <app-sidenav></app-sidenav>
+  <div class="wrapper">
+    <!-- start: page header -->
+    <app-header></app-header>
+    <!-- start: page footer -->
+
+    <div class="container" id="container">
+      <div
+        class="card mt-2 m-0"
+        *ngIf="showAddForm === true && showEditForm === false"
+      >
+        <div class="row">
+          <div class="h5 px-5 mt-3">Add location</div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="locationForm">
+            <div class="row">
+              <div class="col col-md-4">
+                <label for="country" class="form-label">Select Country *</label>
+                <select
+                  [ngClass]="{
+                    'is-invalid':
+                      submitted && locationForm.get('country')?.errors
+                  }"
+                  (change)="getStates($event)"
+                  class="form-select"
+                  id="country"
+                  aria-label="Default select example"
+                  formControlName="country"
+                >
+                  <option selected>Select Country</option>
+                  <option *ngFor="let i of globalData">
+                    {{ i.country }}
+                  </option>
+                </select>
+              </div>
+              <div class="col col-md-4">
+                <label for="state" class="form-label">Select State *</label>
+                <select
+                  [ngClass]="{
+                    'is-invalid': submitted && locationForm.get('state')?.errors
+                  }"
+                  (change)="getCities($event)"
+                  class="form-select"
+                  id="state"
+                  aria-label="Default select example"
+                  formControlName="state"
+                >
+                  <option selected>Select State</option>
+                  <option *ngFor="let i of states">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col col-md-4">
+                <label for="city" class="form-label">Select City *</label>
+                <select
+                  [ngClass]="{
+                    'is-invalid': submitted && locationForm.get('city')?.errors
+                  }"
+                  id="city"
+                  class="form-select"
+                  aria-label="Default select example"
+                  formControlName="city"
+                >
+                  <option selected>Select City</option>
+                  <option *ngFor="let i of cities">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col col-md-4">
+                <label for="area" class="form-label">Area *</label>
+                <input
+                  maxlength="30"
+                  [ngClass]="{
+                    'is-invalid': submitted && locationForm.get('area')?.errors
+                  }"
+                  type="text"
+                  id="area"
+                  class="form-control"
+                  placeholder="enter detail location"
+                  formControlName="area"
+                />
+                <div
+                  class="text-danger"
+                  *ngIf="submitted && locationForm.get('area')?.errors?.['nameValidator']"
+                >
+                  {{ "no specialChrecters allowed" }}
+                </div>
+                <div
+                  class="text-danger"
+                  *ngIf="submitted && locationForm.get('area')?.errors?.['noWhitespaceValidator']"
+                >
+                  {{ "starting letter should be charecter" }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-md-4"></div>
+              <div class="col col-md-4">
+                <button
+                  class="btn lift text-uppercase btn-primary mt-4"
+                  id="btn"
+                  (click)="submit()"
+                  type="submit"
+                >
+                  submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div
+        class="card mt-2 m-0"
+        *ngIf="showAddForm === false && showEditForm === true"
+      >
+        <div class="row">
+          <div class="h5 px-3 mt-3">Edit location</div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="editlocationForm">
+            <div class="row">
+              <div class="col col-md-4">
+                <label for="country" class="form-label">Select Country *</label>
+                <select
+                  [ngClass]="{
+                    'is-invalid':
+                      submitted && editlocationForm.get('country')?.errors
+                  }"
+                  (change)="getStates($event)"
+                  class="form-select"
+                  id="country"
+                  aria-label="Default select example"
+                  formControlName="country"
+                >
+                  <option selected>{{ editData.country }}</option>
+                  <option *ngFor="let i of globalData">
+                    {{ i.country }}
+                  </option>
+                </select>
+              </div>
+              <div class="col col-md-4">
+                <label for="state" class="form-label">Select State *</label>
+                <select
+                  [ngClass]="{
+                    'is-invalid':
+                      submitted && editlocationForm.get('state')?.errors
+                  }"
+                  (change)="getCities($event)"
+                  class="form-select"
+                  id="state"
+                  aria-label="Default select example"
+                  formControlName="state"
+                >
+                  <option selected>{{ editData.state }}</option>
+                  <option *ngFor="let i of states">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col col-md-4">
+                <label for="city" class="form-label">Select City *</label>
+                <select
+                  [ngClass]="{
+                    'is-invalid':
+                      submitted && editlocationForm.get('city')?.errors
+                  }"
+                  id="city"
+                  class="form-select"
+                  aria-label="Default select example"
+                  formControlName="city"
+                >
+                  <option selected>{{ editData.city }}</option>
+                  <option *ngFor="let i of cities">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col col-md-4">
+                <label for="area" class="form-label">Area *</label>
+                <input
+                  [ngClass]="{
+                    'is-invalid':
+                      submitted && editlocationForm.get('area')?.errors
+                  }"
+                  maxlength="30"
+                  type="text"
+                  id="area"
+                  class="form-control"
+                  placeholder="enter detail location"
+                  formControlName="area"
+                />
+                <div
+                  class="text-danger"
+                  *ngIf="submitted && editlocationForm.get('area')?.errors?.['nameValidator']"
+                >
+                  {{ "no specialChrecters allowed" }}
+                </div>
+                <div
+                  class="text-danger"
+                  *ngIf="submitted && editlocationForm.get('area')?.errors?.['noWhitespaceValidator']"
+                >
+                  {{ "starting letter should be charecter" }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-md-4"></div>
+              <div class="col col-md-4">
+                <button
+                  class="btn lift text-uppercase btn-primary mt-4"
+                  (click)="updateData()"
+                  type="submit"
+                >
+                  Update
+                </button>
+                <button
+                  style="margin-left: 2%"
+                  class="btn lift text-uppercase btn-danger mt-4"
+                  (click)="cancel()"
+                  type="submit"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mt-5 m-0">
+        <div class="card-body">
+          <div class="row">
+            <div class="col col-md-6 h5 px-3">Location Data</div>
+            <div class="col col-md-6">
+              <input
+                type="search"
+                class="form-control"
+                placeholder="Search"
+                [(ngModel)]="searchText"
+              />
+            </div>
+          </div>
+          <div class="row mt-3 text-center">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Country</th>
+                  <th>State</th>
+                  <th>City</th>
+                  <th>Area</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let j = index;
+                    let i;
+                    of: tableArray | search : searchText
+                  "
+                >
+                  <td>{{ j + 1 }}</td>
+                  <td>{{ i.country }}</td>
+                  <td>{{ i.state }}</td>
+                  <td>{{ i.city }}</td>
+                  <td>{{ i.area }}</td>
+                  <td>
+                    <button
+                      class="btn lift btn-secondary edit-btn"
+                      type="button"
+                      (click)="getUpdateData(i)"
+                    >
+                      <span class="material-symbols-outlined"> edit </span>
+                    </button>
+                    <button
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      class="btn lift btn-danger delete-btn"
+                      type="button"
+                      (click)="showModal(i._id)"
+                    >
+                      <span class="material-symbols-outlined"> delete </span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row mt-3" *ngIf="tableData.length > tableArray.length">
+            <div class="col col-md-8"></div>
+            <div class="col col-md-4">
+              <nav aria-label="Page navigation example" id="pagination">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <button
+                      class="page-link"
+                      *ngIf="end > 5"
+                      (click)="
+                        start = start - 5; end = end - 5; getAllLocations()
+                      "
+                    >
+                      Previous
+                    </button>
+                  </li>
+
+                  <li class="page-item">
+                    <button
+                      class="page-link"
+                      *ngIf="tableData.length > tableArray.length"
+                      (click)="
+                        start = start + 5; end = end + 5; getAllLocations()
+                      "
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Delete Warning
+            </h1>
+          </div>
+          <div class="modal-body">Are you sure want to Delete ?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger lift text-uppercase"
+              (click)="deleteLocation()"
+              data-bs-dismiss="modal"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
